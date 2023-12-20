@@ -7,7 +7,7 @@ A game where everyone can feel like an investor, buy and acquire property, and a
 
 # Contribution
 If you have any suggestions for improving this game, please create a new issue or submit a pull request.
-[<img alt="Project view" height="600" src="Investment-game.png" title="Block diagram of the final work of the project" width="800"/>](https://www.twitch.tv/deema_k)
+[<img alt="Project view" height="600" src="Investment-game.png" title="Block diagram of the final work of the project" width="800"/>](https://github.com/DevDrift/investment-game/wiki/Block-diagram-of-the-final-work-of-the-project)
 
 # License
 This project is licensed under the terms of the [license](LICENSE). Please review it before using or distributing the project.
