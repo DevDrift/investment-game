@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"os"
 )
 
@@ -12,4 +13,13 @@ func GetEnv(key, fallback string) (value string) {
 		return fallback
 	}
 	return value
+}
+
+// ToJsonBytes конвертация в массив байт
+func ToJsonBytes(input interface{}) []byte {
+	marshal, err := json.Marshal(input)
+	if err != nil {
+		return []byte(``)
+	}
+	return marshal
 }
