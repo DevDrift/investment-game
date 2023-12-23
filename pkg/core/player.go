@@ -1,9 +1,13 @@
 package core
 
-// Player - структура игрока.
-// DiscordId - id игрока в дискорде.
-// AssetStore - хранилище имущества.
+// Player - the structure of the player.
+// DiscordId - id of the player in the discord.
+// AssetStore - Asset list. The Asset's ID.
 type Player struct {
-	DiscordId  string           `json:"discordId"`
-	AssetStore map[string]Asset `json:"assetStore"`
+	DiscordId  string   `json:"discordId"`
+	AssetStore []string `json:"assetStore"`
+}
+
+func (player *Player) Key() []byte {
+	return []byte(player.DiscordId)
 }
