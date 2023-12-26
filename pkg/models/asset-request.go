@@ -1,7 +1,10 @@
 package models
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/DevDrift/investment-game/pkg/core"
+	"github.com/DevDrift/investment-game/pkg/integration"
 	"github.com/google/uuid"
 	"math/rand"
 	"time"
@@ -27,12 +30,45 @@ func (req *AssetRequest) Random() (newAsset *core.Asset, err error) {
 	max := len(types) - 1
 	number := rand.Intn(max-min) + min
 	getType := types[number]
+	/*names*/
+	typeDataNameRequest := integration.JsonRequest{
+		Url: fmt.Sprintf("https://raw.githubusercontent.com/DevDrift/investment-game/main/data/names/%s.json", getType),
+	}
+	dataNames, err := typeDataNameRequest.GetRawData()
+	if err != nil {
+		return nil, err
+	}
+	var names []string
+	err = json.Unmarshal(dataNames, &names)
+	if err != nil {
+		return
+	}
+	max = len(names) - 1
+	randNumberName := rand.Intn(max-min) + min
+	/*prompts*/
+	typeDataPromptsRequest := integration.JsonRequest{
+		Url: fmt.Sprintf("https://raw.githubusercontent.com/DevDrift/investment-game/main/data/prompts/%s.json", getType),
+	}
+	dataPrompts, err := typeDataPromptsRequest.GetRawData()
+	if err != nil {
+		return
+	}
+	var prompts []string
+	err = json.Unmarshal(dataPrompts, &prompts)
+	if err != nil {
+		return
+	}
+	max = len(prompts) - 1
+	randNumberPrompt := rand.Intn(max-min) + min
+	max = 10
+	randNumberImage := rand.Intn(max-min) + min
 	newAsset = &core.Asset{
 		Id:      uuid.NewString(),
-		Name:    "",
-		Comment: "",
+		Name:    names[randNumberName],
+		Comment: prompts[randNumberPrompt],
 		Type:    getType,
-		Price:   0,
+		ImgUrl:  fmt.Sprintf("https://raw.githubusercontent.com/DevDrift/investment-game/images/%s/%d.png", getType, randNumberImage),
+		Price:   core.BasePrices[getType],
 		Risk:    0,
 	}
 	return

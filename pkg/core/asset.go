@@ -2,11 +2,22 @@ package core
 
 import "github.com/DevDrift/investment-game/pkg/utils"
 
+/*groups*/
 const (
 	StockType          = "stock"
 	CryptocurrencyType = "cryptocurrency"
 	BuildingType       = "building"
 	FactoryType        = "factory"
+)
+
+var (
+	//BasePrices prices
+	BasePrices = map[string]float64{
+		StockType:          10.0,
+		CryptocurrencyType: 20.0,
+		BuildingType:       30.0,
+		FactoryType:        40.0,
+	}
 )
 
 // Asset asset data structure
