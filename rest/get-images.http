@@ -1,0 +1,7 @@
+GET https://raw.githubusercontent.com/DevDrift/investment-game/images/cryptocurrency/9.png
+###
+
+GET https://raw.githubusercontent.com/DevDrift/investment-game/main/data/names/cryptocurrency.json
+Content-Type: application/json
+
+###
