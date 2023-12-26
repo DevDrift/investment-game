@@ -70,7 +70,7 @@ func (req *AssetRequest) Random() (newAsset *core.Asset, err error) {
 	return
 }
 
-// Add asset by id
+// Add by id
 func (req *AssetRequest) Add() (asset *core.Asset, err error) {
 	db, err := cached.OpenDb(AssetsTable)
 	if err != nil {
@@ -82,7 +82,7 @@ func (req *AssetRequest) Add() (asset *core.Asset, err error) {
 	return
 }
 
-// Get asset by id
+// Get by id
 func (req *AssetRequest) Get(id []byte) (asset *core.Asset, err error) {
 	db, err := cached.OpenDb(AssetsTable)
 	if err != nil {
@@ -102,8 +102,8 @@ func (req *AssetRequest) Get(id []byte) (asset *core.Asset, err error) {
 	return
 }
 
-// List assets
-func (req *AssetRequest) List() (assets []core.Asset, err error) {
+// List items
+func (req *AssetRequest) List() (items []core.Asset, err error) {
 	db, err := cached.OpenDb(AssetsTable)
 	if err != nil {
 		return
@@ -118,12 +118,12 @@ func (req *AssetRequest) List() (assets []core.Asset, err error) {
 		if err != nil {
 			continue
 		}
-		assets = append(assets, current)
+		items = append(items, current)
 	}
 	return
 }
 
-// Update asset by id
+// Update by id
 func (req *AssetRequest) Update(id []byte) (asset *core.Asset, err error) {
 	db, err := cached.OpenDb(AssetsTable)
 	if err != nil {
@@ -135,7 +135,7 @@ func (req *AssetRequest) Update(id []byte) (asset *core.Asset, err error) {
 	return
 }
 
-// Delete asset by id
+// Delete by id
 func (req *AssetRequest) Delete(id []byte) (err error) {
 	db, err := cached.OpenDb(AssetsTable)
 	if err != nil {
