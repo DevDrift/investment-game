@@ -38,17 +38,17 @@ func OpenDb(table string) (*Backup, error) {
 	return cacheData[basePath], nil
 }
 
-func (db *Backup) BitAdd(key string, item []byte) error {
+func (db *Backup) BitAdd(key []byte, item []byte) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		bucket, err := tx.CreateBucketIfNotExists([]byte(db.Bucket))
 		if err != nil {
 			return err
 		}
-		return bucket.Put([]byte(key), item)
+		return bucket.Put(key, item)
 	})
 }
 
-func (db *Backup) BitGet(key string) (error, []byte) {
+func (db *Backup) BitGet(key []byte) (error, []byte) {
 	var result []byte
 	err := db.View(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(db.Bucket))
@@ -59,7 +59,7 @@ func (db *Backup) BitGet(key string) (error, []byte) {
 			}
 		}
 		bucket = tx.Bucket([]byte(db.Bucket))
-		result = bucket.Get([]byte(key))
+		result = bucket.Get(key)
 		return nil
 	})
 	if err != nil {
@@ -114,7 +114,7 @@ func (db *Backup) BitGetFist() (error, []byte) {
 	return nil, result
 }
 
-func (db *Backup) BitExists(key string) (error, bool) {
+func (db *Backup) BitExists(key []byte) (error, bool) {
 	err := db.View(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(db.Bucket))
 		if bucket == nil {
@@ -124,7 +124,7 @@ func (db *Backup) BitExists(key string) (error, bool) {
 			}
 		}
 		bucket = tx.Bucket([]byte(db.Bucket))
-		if bucket.Get([]byte(key)) == nil {
+		if bucket.Get(key) == nil {
 			return fmt.Errorf("key not found")
 		}
 		return nil
@@ -138,10 +138,10 @@ func (db *Backup) BitExists(key string) (error, bool) {
 	return nil, true
 }
 
-func (db *Backup) Delete(key string) error {
+func (db *Backup) Delete(key []byte) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(db.Bucket))
-		return bucket.Delete([]byte(key))
+		return bucket.Delete(key)
 	})
 }
 
