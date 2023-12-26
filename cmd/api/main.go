@@ -1,13 +1,8 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
-	"log"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Print(err)
-	}
 }
