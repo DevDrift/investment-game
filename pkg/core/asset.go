@@ -18,6 +18,20 @@ var (
 		BuildingType:       30.0,
 		FactoryType:        40.0,
 	}
+	//BaseRisks risks
+	BaseRisks = map[string]float64{
+		StockType:          1.0,
+		CryptocurrencyType: 1.5,
+		BuildingType:       2.0,
+		FactoryType:        2.5,
+	}
+	//Types all types
+	Types = []string{
+		StockType,
+		BuildingType,
+		CryptocurrencyType,
+		FactoryType,
+	}
 )
 
 // Asset asset data structure
