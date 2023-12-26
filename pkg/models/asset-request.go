@@ -21,15 +21,17 @@ func (req *AssetRequest) Random() (newAsset *core.Asset, err error) {
 		core.StockType,
 		core.BuildingType,
 		core.CryptocurrencyType,
+		core.FactoryType,
 	}
 	min := 0
 	max := len(types) - 1
 	number := rand.Intn(max-min) + min
+	getType := types[number]
 	newAsset = &core.Asset{
 		Id:      uuid.NewString(),
-		Name:    types[number],
+		Name:    "",
 		Comment: "",
-		Type:    "",
+		Type:    getType,
 		Price:   0,
 		Risk:    0,
 	}

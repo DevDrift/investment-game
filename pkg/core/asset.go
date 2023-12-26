@@ -6,6 +6,7 @@ const (
 	StockType          = "stock"
 	CryptocurrencyType = "cryptocurrency"
 	BuildingType       = "building"
+	FactoryType        = "factory"
 )
 
 // Asset asset data structure
