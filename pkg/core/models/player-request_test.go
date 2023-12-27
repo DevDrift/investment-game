@@ -109,4 +109,9 @@ func TestPlayerRequest_PutMoney(t *testing.T) {
 		return
 	}
 	assert.Equal(t, inputMoney*2, getBalance.Account)
+	balance, err = req.PutMoney(-inputMoney)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 }
