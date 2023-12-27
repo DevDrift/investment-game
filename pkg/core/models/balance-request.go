@@ -22,8 +22,7 @@ func (req *BalanceRequest) Add() (balance *core.Balance, err error) {
 		return
 	}
 	balance = req.Balance
-	bytes := utils.ToJsonBytes(balance)
-	err = db.BitAdd(balance.Key(), bytes)
+	err = db.BitAdd(balance.Key(), balance.Value())
 	return
 }
 
