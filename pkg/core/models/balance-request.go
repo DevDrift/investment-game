@@ -16,18 +16,18 @@ type BalanceRequest struct {
 }
 
 // Add by id
-func (req *BalanceRequest) Add() (balance *core.Balance, err error) {
+func (req *BalanceRequest) Add() (item *core.Balance, err error) {
 	db, err := cached.OpenDb(BalanceTable)
 	if err != nil {
 		return
 	}
-	balance = req.Balance
-	err = db.BitAdd(balance.Key(), balance.Value())
+	item = req.Balance
+	err = db.BitAdd(item.Key(), item.Value())
 	return
 }
 
 // Get by id
-func (req *BalanceRequest) Get(id []byte) (balance *core.Balance, err error) {
+func (req *BalanceRequest) Get(id []byte) (item *core.Balance, err error) {
 	db, err := cached.OpenDb(BalanceTable)
 	if err != nil {
 		return
@@ -39,7 +39,7 @@ func (req *BalanceRequest) Get(id []byte) (balance *core.Balance, err error) {
 	if bytes == nil {
 		return
 	}
-	err = json.Unmarshal(bytes, &balance)
+	err = json.Unmarshal(bytes, &item)
 	if err != nil {
 		return
 	}
