@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/DevDrift/investment-game/pkg/core"
 	cached "github.com/DevDrift/investment-game/pkg/database"
-	"github.com/DevDrift/investment-game/pkg/utils"
 )
 
 const PlayerTable = "players"
@@ -74,8 +73,7 @@ func (req *PlayerRequest) Update(id []byte) (item *core.Player, err error) {
 		return
 	}
 	item = req.Player
-	bytes := utils.ToJsonBytes(item)
-	err = db.BitAdd(id, bytes)
+	err = db.BitAdd(id, item.Value())
 	return
 }
 

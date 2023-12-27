@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/DevDrift/investment-game/pkg/core"
 	cached "github.com/DevDrift/investment-game/pkg/database"
-	"github.com/DevDrift/investment-game/pkg/utils"
 )
 
 const BalanceTable = "balances"
@@ -74,8 +73,7 @@ func (req *BalanceRequest) Update(id []byte) (item *core.Balance, err error) {
 		return
 	}
 	item = req.Balance
-	bytes := utils.ToJsonBytes(item)
-	err = db.BitAdd(id, bytes)
+	err = db.BitAdd(id, item.Value())
 	return
 }
 
@@ -89,19 +87,19 @@ func (req *BalanceRequest) Delete(id []byte) (err error) {
 }
 
 // PutMoneyToPersonalAccount - функция для внесения n-ого значения средств на личный счет игрока.
-func (req *BalanceRequest) PutMoneyToPersonalAccount(money float64) (err error) {
+func (req *BalanceRequest) PutMoneyToPersonalAccount(id []byte, money float64) (err error) {
 	// TODO Not implemented
 	return
 }
 
 // GetPersonalAccount - функция для получения информации о всей сумме личного счета.
-func (req *BalanceRequest) GetPersonalAccount() (err error, money float64) {
+func (req *BalanceRequest) GetPersonalAccount(id []byte) (err error, money float64) {
 	// TODO Not implemented
 	return
 }
 
 // GetMoneyFromPersonalAccount - функция для вывода n-ого значения из кошелька игрока.
-func (req *BalanceRequest) GetMoneyFromPersonalAccount(money float64) (err error, _ float64) {
+func (req *BalanceRequest) GetMoneyFromPersonalAccount(id []byte, money float64) (err error, _ float64) {
 	// TODO Not implemented
 	return
 }
