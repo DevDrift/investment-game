@@ -88,6 +88,9 @@ func (req *PlayerRequest) Delete(id []byte) (err error) {
 
 // PutMoney - функция для внесения n-ого значения средств на личный счет игрока.
 func (req *PlayerRequest) PutMoney(money float64) (balance *core.Balance, err error) {
+	if money < 0 {
+		money = 0.0
+	}
 	player := req.Player
 	balanceReq := BalanceRequest{}
 	exists, err := balanceReq.Exists(player.Key())
