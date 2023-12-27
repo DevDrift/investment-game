@@ -70,18 +70,18 @@ func (req *AssetRequest) Random() (newAsset *core.Asset, err error) {
 }
 
 // Add by id
-func (req *AssetRequest) Add() (asset *core.Asset, err error) {
+func (req *AssetRequest) Add() (item *core.Asset, err error) {
 	db, err := cached.OpenDb(AssetsTable)
 	if err != nil {
 		return
 	}
-	asset = req.Asset
-	err = db.BitAdd(asset.Key(), asset.Value())
+	item = req.Asset
+	err = db.BitAdd(item.Key(), item.Value())
 	return
 }
 
 // Get by id
-func (req *AssetRequest) Get(id []byte) (asset *core.Asset, err error) {
+func (req *AssetRequest) Get(id []byte) (item *core.Asset, err error) {
 	db, err := cached.OpenDb(AssetsTable)
 	if err != nil {
 		return
@@ -93,7 +93,7 @@ func (req *AssetRequest) Get(id []byte) (asset *core.Asset, err error) {
 	if bytes == nil {
 		return
 	}
-	err = json.Unmarshal(bytes, &asset)
+	err = json.Unmarshal(bytes, &item)
 	if err != nil {
 		return
 	}
@@ -122,13 +122,13 @@ func (req *AssetRequest) List() (items []core.Asset, err error) {
 }
 
 // Update by id
-func (req *AssetRequest) Update(id []byte) (asset *core.Asset, err error) {
+func (req *AssetRequest) Update(id []byte) (item *core.Asset, err error) {
 	db, err := cached.OpenDb(AssetsTable)
 	if err != nil {
 		return
 	}
-	asset = req.Asset
-	err = db.BitAdd(id, asset.Value())
+	item = req.Asset
+	err = db.BitAdd(id, item.Value())
 	return
 }
 
