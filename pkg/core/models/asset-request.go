@@ -6,7 +6,6 @@ import (
 	"github.com/DevDrift/investment-game/pkg/core"
 	cached "github.com/DevDrift/investment-game/pkg/database"
 	"github.com/DevDrift/investment-game/pkg/integration"
-	"github.com/DevDrift/investment-game/pkg/utils"
 	"github.com/google/uuid"
 	"math/rand"
 	"time"
@@ -77,8 +76,7 @@ func (req *AssetRequest) Add() (asset *core.Asset, err error) {
 		return
 	}
 	asset = req.Asset
-	bytes := utils.ToJsonBytes(asset)
-	err = db.BitAdd(asset.Key(), bytes)
+	err = db.BitAdd(asset.Key(), asset.Value())
 	return
 }
 
@@ -130,8 +128,7 @@ func (req *AssetRequest) Update(id []byte) (asset *core.Asset, err error) {
 		return
 	}
 	asset = req.Asset
-	bytes := utils.ToJsonBytes(asset)
-	err = db.BitAdd(id, bytes)
+	err = db.BitAdd(id, asset.Value())
 	return
 }
 
