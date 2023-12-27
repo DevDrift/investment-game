@@ -85,3 +85,32 @@ func (req *PlayerRequest) Delete(id []byte) (err error) {
 	}
 	return db.Delete(id)
 }
+
+// PutMoney - функция для внесения n-ого значения средств на личный счет игрока.
+func (req *PlayerRequest) PutMoney(money float64) (balance *core.Balance, err error) {
+	player := req.Player
+	balanceReq := BalanceRequest{}
+	exists, err := balanceReq.Exists(player.Key())
+	if err != nil {
+		return
+	}
+	if exists {
+		balance, err = balanceReq.Get(player.Key())
+		if err != nil {
+			return
+		}
+		balance.Account += money
+		balanceReq.Balance = balance
+		balance, err = balanceReq.Update(player.Key())
+		if err != nil {
+			return
+		}
+		return
+	}
+	balanceReq.Balance = &core.Balance{
+		Id:      player.Id,
+		Account: money,
+	}
+	balance, err = balanceReq.Add()
+	return
+}
