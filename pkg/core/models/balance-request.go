@@ -45,6 +45,16 @@ func (req *BalanceRequest) Get(id []byte) (item *core.Balance, err error) {
 	return
 }
 
+// Exists by id
+func (req *BalanceRequest) Exists(id []byte) (exist bool, err error) {
+	db, err := cached.OpenDb(BalanceTable)
+	if err != nil {
+		return
+	}
+	err, exist = db.BitExists(id)
+	return
+}
+
 // List items
 func (req *BalanceRequest) List() (items []core.Balance, err error) {
 	db, err := cached.OpenDb(BalanceTable)
@@ -84,12 +94,6 @@ func (req *BalanceRequest) Delete(id []byte) (err error) {
 		return
 	}
 	return db.Delete(id)
-}
-
-// PutMoneyToPersonalAccount - функция для внесения n-ого значения средств на личный счет игрока.
-func (req *BalanceRequest) PutMoneyToPersonalAccount(id []byte, money float64) (err error) {
-	// TODO Not implemented
-	return
 }
 
 // GetPersonalAccount - функция для получения информации о всей сумме личного счета.

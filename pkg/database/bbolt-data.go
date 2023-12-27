@@ -1,6 +1,7 @@
 package database
 
 import (
+	"errors"
 	"fmt"
 	"github.com/DevDrift/investment-game/pkg/utils"
 	bolt "go.etcd.io/bbolt"
@@ -196,37 +197,30 @@ func (db *Data) BucketGetFist(bucket []byte) (error, []byte) {
 
 func (db *Data) BitExists(key []byte) (error, bool) {
 	err := db.View(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte(db.Bucket))
-		if bucket == nil {
-			_, err := tx.CreateBucket([]byte(db.Bucket))
-			if err != nil {
-				return err
-			}
+		bkt := tx.Bucket([]byte(db.Bucket))
+		if bkt == nil {
+			return errors.New(ErrKeyNotFound)
 		}
-		bucket = tx.Bucket([]byte(db.Bucket))
-		if bucket.Get(key) == nil {
+		if bkt.Get(key) == nil {
 			return fmt.Errorf(ErrKeyNotFound)
 		}
 		return nil
 	})
 	if err != nil {
-		if err.Error() != ErrKeyNotFound || err.Error() == ErrKeyNotFound {
+		if err.Error() != ErrKeyNotFound {
 			return err, false
 		}
+		return nil, false
 	}
 	return nil, true
 }
 
 func (db *Data) BucketExists(bucket, key []byte) (error, bool) {
 	err := db.View(func(tx *bolt.Tx) error {
-		bkt := tx.Bucket(bucket)
-		if bkt == nil {
-			_, err := tx.CreateBucket(bucket)
-			if err != nil {
-				return err
-			}
+		bkt, err := tx.CreateBucketIfNotExists(bucket)
+		if err != nil {
+			return err
 		}
-		bkt = tx.Bucket(bucket)
 		if bkt.Get(key) == nil {
 			return fmt.Errorf(ErrKeyNotFound)
 		}
