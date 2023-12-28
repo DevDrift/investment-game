@@ -2,11 +2,16 @@ package models
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/DevDrift/investment-game/pkg/core"
 	cached "github.com/DevDrift/investment-game/pkg/database"
 )
 
 const BalanceTable = "balances"
+
+var (
+	ErrInsufficientFundsBalance = errors.New("ErrInsufficientFundsBalance")
+)
 
 // BalanceRequest - модель для взаимодействия с БД.
 // Balance - ссылка на общий баланс игрока.

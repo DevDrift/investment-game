@@ -117,3 +117,7 @@ func (req *PlayerRequest) PutMoney(money float64) (balance *core.Balance, err er
 	balance, err = balanceReq.Add()
 	return
 }
+
+func (req *PlayerRequest) BuyActive(activeId []byte) {
+
+}
