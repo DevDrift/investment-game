@@ -8,15 +8,8 @@ import (
 )
 
 func TestPlayerRequest(t *testing.T) {
-	testId := "test"
-	testName := "tName"
-	testEmail := "tEmail"
 	req := PlayerRequest{
-		Player: &core.Player{
-			Id:    testId,
-			Name:  testName,
-			Email: testEmail,
-		},
+		Player: testPlayer1,
 	}
 	addPlayer, err := req.Add()
 	if err != nil {
@@ -35,7 +28,7 @@ func TestPlayerRequest(t *testing.T) {
 	}
 	assert.NotEqual(t, 0, len(list))
 	getPlayer.Id = uuid.NewString()
-	getPlayer.Name = "newName"
+	getPlayer.Name = testNewName
 	req.Player = getPlayer
 	updatePlayer, err := req.Update([]byte(testId))
 	if err != nil {
@@ -64,9 +57,6 @@ func TestPlayerRequest(t *testing.T) {
 
 func TestPlayerRequest_PutMoney(t *testing.T) {
 	testId := uuid.NewString()
-	testName := "tName"
-	testEmail := "tEmail"
-	inputMoney := 100.0
 	req := PlayerRequest{
 		Player: &core.Player{
 			Id:    testId,

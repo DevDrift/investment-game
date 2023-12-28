@@ -217,9 +217,9 @@ func (db *Data) BitExists(key []byte) (error, bool) {
 
 func (db *Data) BucketExists(bucket, key []byte) (error, bool) {
 	err := db.View(func(tx *bolt.Tx) error {
-		bkt, err := tx.CreateBucketIfNotExists(bucket)
-		if err != nil {
-			return err
+		bkt := tx.Bucket(bucket)
+		if bkt == nil {
+			return errors.New(ErrKeyNotFound)
 		}
 		if bkt.Get(key) == nil {
 			return fmt.Errorf(ErrKeyNotFound)

@@ -7,7 +7,6 @@ import (
 )
 
 func TestAssetRequest(t *testing.T) {
-	testId := "test"
 	req := AssetRequest{}
 	random, err := req.Random()
 	if err != nil {
@@ -23,6 +22,7 @@ func TestAssetRequest(t *testing.T) {
 	}
 	getAsset, err := req.Get([]byte(testId))
 	if err != nil {
+		t.Error(err)
 		return
 	}
 	assert.Equal(t, addAsset.Name, getAsset.Name)

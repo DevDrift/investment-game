@@ -8,7 +8,6 @@ import (
 )
 
 func TestBalanceRequest(t *testing.T) {
-	testId := "test"
 	req := BalanceRequest{
 		Balance: &core.Balance{
 			Id:      testId,
@@ -22,6 +21,7 @@ func TestBalanceRequest(t *testing.T) {
 	}
 	getBalance, err := req.Get([]byte(testId))
 	if err != nil {
+		t.Error(err)
 		return
 	}
 	assert.Equal(t, addBalance.Account, getBalance.Account)
@@ -57,4 +57,5 @@ func TestBalanceRequest(t *testing.T) {
 		return
 	}
 	assert.NotEqual(t, deletedBalance, 0)
+
 }
