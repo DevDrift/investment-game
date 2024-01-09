@@ -20,4 +20,5 @@ var (
 	testPortfolio = &core.Portfolio{
 		Id: testId,
 	}
+	auctionTestStep = 0.10
 )

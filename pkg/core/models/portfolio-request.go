@@ -64,3 +64,7 @@ func (req *PortfolioRequest) GetAssets() (items []core.Asset, err error) {
 	}
 	return
 }
+
+// sell to user
+// create auction store
+// add asset to auction store
