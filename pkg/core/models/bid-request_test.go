@@ -1,30 +1,19 @@
 package models
 
 import (
-	"github.com/DevDrift/investment-game/pkg/core"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestBidRequest_Bid(t *testing.T) {
+	clearAll(t)
 	/*balance request*/
-	balanceRequest := BalanceRequest{
-		Balance: &core.Balance{
-			Id:      testId,
-			Account: 100,
-		},
-	}
-	addBalance, err := balanceRequest.Add()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	getBalance, err := balanceRequest.Get([]byte(testId))
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	assert.Equal(t, addBalance.Account, getBalance.Account)
+	user1 := "user1"
+	user2 := "user2"
+	user3 := "user3"
+	_ = createBalance(t, user1, 300)
+	_ = createBalance(t, user2, 300)
+	_ = createBalance(t, user3, 300)
 	/*asset request*/
 	assetRequest := AssetRequest{}
 	random, err := assetRequest.Random()
@@ -76,24 +65,34 @@ func TestBidRequest_Bid(t *testing.T) {
 		AuctionId: aucFindId,
 	}
 	/*bids*/
-	newBid, err := bidRequest.Bid(testId, 50.0)
+	user1NewBid, err := bidRequest.Bid(user1, 50.0)
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	assert.Equal(t, newBid.Bid, 50.0)
+	assert.Equal(t, user1NewBid.Bid, 50.0)
 	bids, err := bidRequest.GetBids()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 	assert.NotEqual(t, len(bids), 0)
-	_, err = bidRequest.Bid(testId, 40.0)
-	assert.NotEqual(t, err, nil)
-	newBid, err = bidRequest.Bid(testId, 70.0)
+	_, err = bidRequest.Bid(user2, 40.0)
+	assert.Equal(t, err, nil)
+	user1NewBid, err = bidRequest.Bid(user1, 70.0)
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	assert.Equal(t, newBid.Bid, 70.0)
+	assert.Equal(t, user1NewBid.Bid, 70.0)
+	_, err = bidRequest.Bid(user3, 70.0)
+	assert.NotEqual(t, err, nil)
+	bids, err = bidRequest.GetBids()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	for _, bid := range bids {
+		t.Logf("U: %v B:%v", bid.UserId, bid.Bid)
+	}
 }

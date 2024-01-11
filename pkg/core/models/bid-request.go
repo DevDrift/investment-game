@@ -8,6 +8,12 @@ import (
 	"time"
 )
 
+var (
+	ErrPriceCannotBeLowerStartingPrice = errors.New("price cannot be lower than the starting price")
+	ErrPriceCannotBeLowerStartingBid   = errors.New("price cannot be lower than the starting bid")
+	ErrBidNotUnique                    = errors.New("your bid is not unique")
+)
+
 type BidRequest struct {
 	AuctionId string    `json:"auctionId"`
 	Amount    *core.Bid `json:"amount"`
@@ -27,7 +33,7 @@ func (bidReq *BidRequest) Bid(userId string, bid float64) (item *core.Bid, err e
 		return nil, err
 	}
 	if bid < asset.Price {
-		err = errors.New("price cannot be lower than the starting price")
+		err = ErrPriceCannotBeLowerStartingPrice
 		return
 	}
 	balanceReq := BalanceRequest{}
@@ -39,7 +45,19 @@ func (bidReq *BidRequest) Bid(userId string, bid float64) (item *core.Bid, err e
 		err = ErrInsufficientFundsBalance
 		return
 	}
-	bidExist, err := bidReq.Exist(userId)
+	bids, err := bidReq.GetBids()
+	if err != nil {
+		return
+	}
+	if bids != nil {
+		for _, itemBid := range bids {
+			if itemBid.Bid == bid {
+				err = ErrBidNotUnique
+				return
+			}
+		}
+	}
+	bidExist, err := bidReq.Exist([]byte(userId))
 	if !bidExist {
 		bidReq.Amount = &core.Bid{
 			UserId: userId,
@@ -53,7 +71,7 @@ func (bidReq *BidRequest) Bid(userId string, bid float64) (item *core.Bid, err e
 		return nil, err
 	}
 	if bid < previousBid.Bid {
-		err = errors.New("price cannot be lower than the starting bid")
+		err = ErrPriceCannotBeLowerStartingBid
 		return
 	}
 	bidReq.Amount = &core.Bid{
@@ -75,14 +93,13 @@ func (bidReq *BidRequest) Add() (item *core.Bid, err error) {
 	return
 }
 
-func (bidReq *BidRequest) Exist(userId string) (exist bool, err error) {
+func (bidReq *BidRequest) Exist(userId []byte) (exist bool, err error) {
 	db, err := cached.OpenDb(AuctionTable)
 	if err != nil {
 		return
 	}
 	auctionId := []byte(bidReq.AuctionId)
-	userKey := []byte(userId)
-	err, exist = db.BucketExists(auctionId, userKey)
+	err, exist = db.BucketExists(auctionId, userId)
 	if err != nil {
 		return false, err
 	}
