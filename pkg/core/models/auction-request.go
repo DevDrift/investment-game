@@ -102,3 +102,5 @@ func (auc *AuctionRequest) Delete(id []byte) (err error) {
 	}
 	return db.Delete(id)
 }
+
+// Закртыть аукцион и определить победителя
