@@ -103,4 +103,67 @@ func (auc *AuctionRequest) Delete(id []byte) (err error) {
 	return db.Delete(id)
 }
 
-// Закртыть аукцион и определить победителя
+// CloseAuction by id
+func (auc *AuctionRequest) CloseAuction(id []byte) (item *core.Auction, err error) {
+	// определить победителя
+	bidReq := BidRequest{
+		AuctionId: string(id),
+	}
+	bids, err := bidReq.GetBids()
+	if err != nil {
+		return
+	}
+	var maxBid float64
+	var userId string
+	for _, bid := range bids {
+		if bid.Bid > maxBid {
+			maxBid = bid.Bid
+			userId = bid.UserId
+		}
+	}
+	// Добавить в портфель пользователя актив аукциона
+	auction, err := auc.Get(id)
+	if err != nil {
+		return
+	}
+	assetKey := []byte(auction.AssetId)
+	assetRequest := AssetRequest{}
+	asset, err := assetRequest.Get(assetKey)
+	if err != nil {
+		return
+	}
+	portfolioRequest := PortfolioRequest{
+		Portfolio: &core.Portfolio{
+			Id: userId,
+		},
+	}
+	_, err = portfolioRequest.BuyAsset(*asset)
+	if err != nil {
+		return
+	}
+	// Внутриигровые события
+	// Интервал рассчета прибыли и убытка
+	return auc.ArchivingAuction(id)
+}
+
+// ArchivingAuction by id
+func (auc *AuctionRequest) ArchivingAuction(id []byte) (item *core.Auction, err error) {
+	auction, err := auc.Get(id)
+	if err != nil {
+		return
+	}
+	db, err := cached.OpenDb(CompletedAuctionTable)
+	if err != nil {
+		return
+	}
+	item = auction
+	err = db.BitAdd(item.Key(), item.Value())
+	if err != nil {
+		return
+	}
+	err = auc.Delete(id)
+	if err != nil {
+		return
+	}
+	return
+}

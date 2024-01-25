@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/DevDrift/investment-game/pkg/core"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -95,4 +96,24 @@ func TestBidRequest_Bid(t *testing.T) {
 	for _, bid := range bids {
 		t.Logf("U: %v B:%v", bid.UserId, bid.Bid)
 	}
+	_, err = aucRequest.CloseAuction([]byte(auction.Id))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	auction, err = aucRequest.Get([]byte(auction.Id))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	assert.Equal(t, auction, (*core.Auction)(nil))
+	portfolio := PortfolioRequest{
+		Portfolio: &core.Portfolio{Id: user1NewBid.UserId},
+	}
+	assets, err := portfolio.GetAssets()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	assert.Equal(t, len(assets), 1)
 }
