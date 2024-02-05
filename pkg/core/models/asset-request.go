@@ -65,6 +65,7 @@ func (req *AssetRequest) Random() (newAsset *core.Asset, err error) {
 		ImgUrl:  fmt.Sprintf("https://raw.githubusercontent.com/DevDrift/investment-game/images/%s/%d.png", getType, randNumberImage),
 		Price:   core.BasePrices[getType],
 		Risk:    core.BaseRisks[getType],
+		Profit:  core.BaseProfits[getType],
 	}
 	return
 }

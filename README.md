@@ -7,7 +7,14 @@ A game where everyone can feel like an investor, buy and acquire property, and a
 
 # Contribution
 If you have any suggestions for improving this game, please create a new issue or submit a pull request.
-[<img alt="Project view" height="600" src="Investment-game.png" title="Block diagram of the final work of the project" width="800"/>](https://github.com/DevDrift/investment-game/wiki/Block-diagram-of-the-final-work-of-the-project)
+[<img alt="Project view" height="auto" src="Investment-game.png" title="Block diagram of the final work of the project" width="auto"/>](https://github.com/DevDrift/investment-game/wiki/Block-diagram-of-the-final-work-of-the-project)
+
+# Social
+Pro golang in vk
+[<img alt="Project view" height="auto" src="golang _ vk _ обучение с нуля.png" title="golang обучение с нуля" width="auto"/>](https://vk.com/pro.golang)
+
+Golang in YouTube
+[<img alt="Project view" height="auto" src="golang _ youtube _ обучение с нуля.png" title="golang обучение с нуля" width="auto"/>](https://www.youtube.com/channel/UCRseMRiPvi0PFkXE4IhRD8Q)
 
 # License
 This project is licensed under the terms of the [license](LICENSE). Please review it before using or distributing the project.

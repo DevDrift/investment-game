@@ -25,6 +25,13 @@ var (
 		BuildingType:       2.0,
 		FactoryType:        2.5,
 	}
+	// BaseProfits profits
+	BaseProfits = map[string]float64{
+		StockType:          0.1,
+		CryptocurrencyType: 1.0,
+		BuildingType:       1.5,
+		FactoryType:        2.0,
+	}
 	//Types all types
 	Types = []string{
 		StockType,
@@ -42,6 +49,7 @@ type Asset struct {
 	ImgUrl  string  `json:"imgUrl"`
 	Type    string  `json:"type"`
 	Price   float64 `json:"price"`
+	Profit  float64 `json:"profit"`
 	Risk    float64 `json:"risk"`
 }
 
