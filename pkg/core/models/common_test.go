@@ -28,6 +28,18 @@ var (
 	auctionTestStep = 0.10
 )
 
+func newAssets(t *testing.T, count int) (list []core.Asset, err error) {
+	for i := 1; i <= count; i++ {
+		req := AssetRequest{}
+		newAsset, err := req.Random()
+		if err != nil {
+			return nil, err
+		}
+		list = append(list, *newAsset)
+	}
+	return
+}
+
 func createBalance(t *testing.T, userId string, amount float64) (balance *core.Balance) {
 	balanceRequest := BalanceRequest{
 		Balance: &core.Balance{
