@@ -6,6 +6,7 @@ import (
 )
 
 type EventRequest struct {
+	Events []core.Event `json:"events"`
 }
 
 // Bidding by time
@@ -16,6 +17,7 @@ func (req *EventRequest) Bidding() (err error) {
 		return
 	}
 	g := new(errgroup.Group)
+
 	for _, player := range list {
 		pl := player
 		g.Go(func() (err error) {
