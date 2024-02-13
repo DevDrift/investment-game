@@ -1,8 +1,8 @@
 package integration
 
 import (
-	"os"
 	"fmt"
+	"os"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -27,7 +27,7 @@ func InitLogger() *Logger {
 }
 
 // GetLevel returns the current Level.
-func (t *Logger)getGlobalLevel() zerolog.Level {
+func (t *Logger) getGlobalLevel() zerolog.Level {
 	return zerolog.GlobalLevel()
 }
 
