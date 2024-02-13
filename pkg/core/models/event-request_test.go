@@ -31,7 +31,17 @@ func TestEventRequest_Bidding(t *testing.T) {
 		return
 	}
 	user1 := "user1"
+	_, err = newPlayer(t, user1)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 	user2 := "user2"
+	_, err = newPlayer(t, user2)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 	_ = createBalance(t, user1, 3000)
 	_ = createBalance(t, user2, 3000)
 	userPortfolio1 := PortfolioRequest{Portfolio: &core.Portfolio{Id: user1}}
@@ -42,6 +52,17 @@ func TestEventRequest_Bidding(t *testing.T) {
 			continue
 		}
 		userPortfolio1.BuyAsset(asset)
+	}
+	balanceReq := BalanceRequest{}
+	firstBalance1, err := balanceReq.Get([]byte(user1))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	firstBalance2, err := balanceReq.Get([]byte(user2))
+	if err != nil {
+		t.Error(err)
+		return
 	}
 	getAssets1, err := userPortfolio1.GetAssets()
 	if err != nil {
@@ -61,5 +82,16 @@ func TestEventRequest_Bidding(t *testing.T) {
 		t.Error(err)
 		return
 	}
-
+	getBalance1, err := balanceReq.Get([]byte(user1))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	assert.NotEqual(t, firstBalance1.Account, getBalance1.Account)
+	getBalance2, err := balanceReq.Get([]byte(user2))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	assert.NotEqual(t, firstBalance2.Account, getBalance2.Account)
 }
