@@ -40,6 +40,16 @@ func newAssets(t *testing.T, count int) (list []core.Asset, err error) {
 	return
 }
 
+func newPlayer(t *testing.T, id string) (player *core.Player, err error) {
+	req := PlayerRequest{
+		Player: &core.Player{
+			Id:   id,
+			Name: id,
+		},
+	}
+	return req.Add()
+}
+
 func createBalance(t *testing.T, userId string, amount float64) (balance *core.Balance) {
 	balanceRequest := BalanceRequest{
 		Balance: &core.Balance{
