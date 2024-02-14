@@ -6,9 +6,5 @@ import "github.com/joho/godotenv"
 //
 // It does not take any parameters and returns an error.
 func InitEnv() error {
-	err := godotenv.Load()
-	if err != nil {
-		return err
-	}
-	return nil
+	return godotenv.Load()
 }
