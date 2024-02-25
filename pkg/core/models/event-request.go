@@ -17,7 +17,10 @@ func (req *EventRequest) Bidding() (err error) {
 		return
 	}
 	g := new(errgroup.Group)
-
+	events := req.Events
+	if len(events) == 0 {
+		return
+	}
 	for _, player := range list {
 		pl := player
 		g.Go(func() (err error) {
@@ -29,8 +32,17 @@ func (req *EventRequest) Bidding() (err error) {
 			}
 			var result float64
 			for _, asset := range assets {
-				// математика
-				result += asset.Profit
+				var eventActivated bool
+				for _, event := range events {
+					if event.Type != asset.Type {
+						continue
+					}
+					eventActivated = true
+					result += event.Calculate(asset.Profit)
+				}
+				if !eventActivated {
+					result += asset.Profit
+				}
 			}
 			balanceReq := BalanceRequest{}
 			balance, err := balanceReq.Get(playerKey)

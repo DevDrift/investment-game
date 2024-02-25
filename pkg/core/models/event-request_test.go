@@ -76,7 +76,14 @@ func TestEventRequest_Bidding(t *testing.T) {
 		return
 	}
 	assert.Equal(t, len(getAssets2), 5)
-	eventReq := EventRequest{}
+	eventReq := EventRequest{
+		Events: []core.Event{
+			{
+				Type:    core.CryptocurrencyType,
+				Percent: 1.0,
+			},
+		},
+	}
 	err = eventReq.Bidding()
 	if err != nil {
 		t.Error(err)
